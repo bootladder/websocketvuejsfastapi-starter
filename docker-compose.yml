@@ -8,6 +8,7 @@ services:
       - "7080:80"
     volumes:
       - "/opt/projects/rolodex/backend:/app"
+      - "/opt/projects/rolodex/data:/data"
 
   rolodexfrontend:
     container_name: "rolodexfrontend"

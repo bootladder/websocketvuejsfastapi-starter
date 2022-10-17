@@ -7,17 +7,13 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 import traceback
+from fastapi import WebSocket
+import asyncio
 
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:5090",
-    "http://localhost:5080",
-    "http://localhost:6080",
-    "http://localhost:6090",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -34,20 +30,60 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name="static") 
 
 
-#######
-# JSON API
-#
-
 # GET THE MODEL
-
-@app.post("/2022/balancereportjson")
-async def balancereportjson_2022(info : Request):
-
-	#requestjson = await info.json()
-	#balancereportjsonstring = ledgercontroller.getBalanceReportJsonString(requestjson)
-
-	#myjson = json.loads(balancereportjsonstring )
-	myjson = json.loads("hello" )
-	return JSONResponse(content=myjson, status_code=201)
+@app.post("/getmodel")
+async def getmodel(info : Request):
+	with open('/data/rolodex.json') as f:
+		myjson = json.load(f)
+	return JSONResponse(content=myjson, status_code=200)
 
 # WRITE THE MODEL
+@app.post("/setmodel")
+async def setmodel(info : Request):
+	myjson = json.loads("fuck yeah" )
+	return JSONResponse(content=myjson, status_code=200)
+
+
+# WATCH THE FILE
+print("yeah serving")
+
+@app.websocket("/ws")
+async def websocket_endpoint_log(websocket: WebSocket):
+    print("WAT")
+    await websocket.accept()
+    await websocket.send_text("FUCK YEAH")
+    i = 0
+
+    try:
+        while True:
+            thehash = 0
+            with open('/data/rolodex.json') as f:
+                myjson = json.load(f)
+                newhash = 1
+
+            i = i+1
+            await asyncio.sleep(1)
+            await websocket.send_text('{"another_'+str(i)+':"dope"}')
+    except Exception as e:
+        print(e)
+    finally:
+        print("WTF WHY CLOS")
+        await websocket.close()
+
+
+#@app.websocket("/ws")
+#async def websocket_endpoint(websocket: WebSocket):
+#    print("started")
+#    await websocket.accept()
+#    try:
+#        while True:
+#            data = await websocket.receive_text()
+#            print(f"received: {int(data)}")
+#            index = int(data)
+#            image = get_image(volume, index)
+#            await websocket.send_bytes(image)
+#    except Exception as e:
+#        print(e)
+#    finally:
+#        websocket.close()
+#
