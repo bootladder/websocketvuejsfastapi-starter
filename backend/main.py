@@ -27,6 +27,7 @@ async def websocket_endpoint(websocket: WebSocket):
             await asyncio.sleep(1)
             await websocket.send_text('{"another_'+str(i)+':"yayval"}')
     except Exception as e:
+        print(e)
     finally:
         await websocket.close()
 

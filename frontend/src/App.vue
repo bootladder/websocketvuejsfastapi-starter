@@ -8,8 +8,11 @@ const backendhosturlwebsocket = 'ws://'+hostwithoutport+':7080/ws'
 
 export default {
 	setup () {
+        const datamodel = ref({"blah":"more"})
+        const connection = null
 		return {
-			poop: ref("blah")
+				datamodel,
+				connection,
 		}
 	},
 
@@ -18,10 +21,9 @@ export default {
     console.log("Starting connection to WebSocket Server")
     this.connection = new WebSocket(backendhosturlwebsocket)
 
-    this.connection.onmessage = function(event) {
-      console.log("HURR");
+    this.connection.onmessage = (event) => {
       console.log(event);
-      this.poop = event
+      this.datamodel = event.data
     }
 
     this.connection.onopen = function(event) {
@@ -38,7 +40,7 @@ export default {
 <template>
     <div class="border border-black text-center font-bold bg-orange-300 rounded-lg"> Hello Websocket </div>
 	<div class="flex flex-row m-2 p-2">
-	{{poop}}
+        <pre>{{datamodel}}</pre>
 	</div>
 </template>
 
