@@ -1,21 +1,20 @@
 version: "2.0"
 services:
 
-  rolodexbackend:
-    container_name: "rolodexbackend"
+  hellobackend:
+    container_name: "hellobackend"
     build: .
     ports:
       - "7080:80"
     volumes:
-      - "/opt/projects/rolodex/backend:/app"
-      - "/opt/projects/rolodex/data:/data"
+      - "./backend:/app"
 
-  rolodexfrontend:
-    container_name: "rolodexfrontend"
+  hellofrontend:
+    container_name: "hellofrontend"
     image: node
     command: "/app/runincontainer.sh"
     working_dir: /app
     ports:
       - "7090:5173"
     volumes:
-      - "/opt/projects/rolodex/frontend:/app"
+      - "./frontend:/app"
