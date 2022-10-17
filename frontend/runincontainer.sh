@@ -1,2 +1,2 @@
-npm install tailwindcss postcss autoprefixer mitt pinia pinia-plugin-persistedstate
+npm install tailwindcss postcss autoprefixer 
 npm run dev
