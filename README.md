@@ -12,4 +12,4 @@ You should see the below.
 
 Profit
 
-![/screenshot.png]
+![screenshot](screenshot.png)
